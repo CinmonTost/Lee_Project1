@@ -26,7 +26,7 @@ public class Project1
             return;
         }
 
-        //Asks for uder input for which representation
+        //Asks for user input for which representation
         System.out.println("Choose from the following signed integer representations: ");
         System.out.println("1: Signed Magnitude");
         System.out.println("2: One's Complement");
@@ -35,7 +35,7 @@ public class Project1
 
         int choice = sc.nextInt();
 
-        //edge cases
+        //edge case 
         if (choice < 1 || choice > 4)
         {
             System.out.println("Please choose an appropriate choice between 1 and 4");
@@ -48,7 +48,7 @@ public class Project1
 
           
 
-        //Prints the table
+        //Prints the table and respective sign value. Checks binary string for 0 for "+" or 1 for "-". This way I can get +0 or -0 to print
         System.out.println("\nBinary String \t\t" + name);
         
         for (int i = 0; i < Math.pow(2, length); i++)
@@ -101,7 +101,7 @@ public class Project1
         sc.close();
     }
 
-    //converts binary string to decimal given the choice
+    //converts binary string to decimal given the choice, this is where the conversions happen for chosen representation
     public static int convertToDecimal(String bString, int choice, int length)
     {
         int dValue = 0;
@@ -117,10 +117,10 @@ public class Project1
                 { 
                     sign = 1; 
                    
-                    for (int i = 1; i < length; i++) //start at index 1 to ignore significant bit, only find the bits after most left bit
+                    for (int i = 1; i < length; i++) //start at index 1 to ignore significant bit
                     {   
                         int bit = bString.charAt(i) == '1' ? 1 : 0; //finds value of the binary string
-                        dValue += bit * Math.pow(2, length - 1 - i); //finds in which spot the binary is in, eg 2^1, 2^2, 2^3
+                        dValue += bit * Math.pow(2, length - 1 - i); //finds in which spot the binary value is in; e.g. 2^1, 2^2, 2^3
                     }   
                 break;
                 } 
@@ -137,7 +137,7 @@ public class Project1
                 {
                     //If negative, invert
                     String invertBinary = invertBinaryString(bString);
-                    dValue = -1 * convertToDecimal(invertBinary, 2, length);
+                    dValue = -1 * convertToDecimal(invertBinary, 2, length); //recursion only for negative
                 }
                 else 
                 {
@@ -152,7 +152,7 @@ public class Project1
                 if (bString.charAt(0) == '1')  //if negative, invert and subtract 1
                 {
                     String invertedB = invertBinaryString(bString);
-                    dValue = -1 * (convertToDecimal(invertedB, 3, length) + 1);
+                    dValue = -1 * (convertToDecimal(invertedB, 3, length) + 1); //recursion only for negative
                 }
                 else
                 {
@@ -168,6 +168,7 @@ public class Project1
                 dValue = Integer.parseInt(bString, 2) - excess;
             break;
         }
+        //absolute value is required here because I don't need the sign to be returned, only the number. This sign is dealt with in main
         return Math.abs(sign * dValue);
     }
 
